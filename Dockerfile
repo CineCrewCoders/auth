@@ -1,11 +1,17 @@
 FROM oven/bun:latest as base
-WORKDIR /app/src
+WORKDIR /app
 
-COPY package.json bun.lockb ./
+# Copy package.json and bun.lockb from auth directory
+COPY ./auth/package.json ./auth/bun.lockb ./
+
+# Install dependencies
 RUN bun install
 
-COPY . .
+# Copy the rest of the auth directory
+COPY ./auth .
 
+# Expose the port
 EXPOSE 3000
 
-CMD ["bun", "run", "index.ts"]
+# Command to run the application
+CMD ["bun", "run", "src/server.ts"]
